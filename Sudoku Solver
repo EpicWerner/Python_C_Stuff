@@ -1,0 +1,156 @@
+def block_correct(sudoku: list, row_no: int, column_no: int):
+
+    block_list = []
+    set1_list = []
+    set2_list = []
+    set3_list = []
+    total_set_list = []
+
+    new = sudoku[row_no]
+    new_1 = sudoku[row_no + 1]
+    new_2 = sudoku[row_no + 2]
+    
+    block_list.append(new[column_no:(column_no + 3):])
+    block_list.append(new_1[column_no:(column_no + 3):])
+    block_list.append(new_2[column_no:(column_no + 3):])
+
+    set1 = set(block_list[0])
+    set2 = set(block_list[1])
+    set3 = set(block_list[2])
+
+    for item in set1:
+
+        if item != 0:
+            set1_list.append(item)
+    
+    for item in set2:
+
+        if item != 0:
+
+            set2_list.append(item)
+
+    for item in set3:
+
+        if item != 0:
+
+            set3_list.append(item)
+
+    total_set_list = set1_list + set2_list + set3_list
+
+    if len (total_set_list) != len(set(total_set_list)):
+
+        return False
+    
+    return True
+
+def column_correct(sudoku: list, column_no: int):
+
+    column_list = []
+
+    check_list = []
+
+    for item in sudoku:
+
+        column_list.append(item[column_no])
+    
+    set_list = set(column_list)
+
+    removed_set_list = []
+
+    for item in set_list:
+
+        if item != 0:
+
+            removed_set_list.append(item)
+
+    for item in column_list:
+
+        if item != 0:
+
+            check_list.append(item)
+    
+    if len(check_list) != len(removed_set_list):
+
+        return False
+
+    return True
+
+def row_correct(sudoku: list, row_no: int):
+
+    set_list = set(sudoku[row_no])
+
+    removed_set_list = []
+
+    for item in set_list:
+
+        if item != 0:
+            removed_set_list.append(item)
+
+
+
+    check_list = []
+
+    for item in sudoku[row_no]:
+
+        if item != 0:
+
+            check_list.append(item)
+            
+    if len(check_list) == len(removed_set_list):
+
+        return True
+    
+    return False
+
+def sudoku_grid_correct(sudoku: list):
+
+    for row in range(0,9):
+
+        if not row_correct(sudoku, row):
+
+            return False
+    
+    for column in range(0,9):
+
+        if not column_correct(sudoku, column):
+
+            return False
+    
+    for row in range (0,9,3):
+
+        for column in range (0,9,3):
+
+            if not block_correct(sudoku, row, column):
+
+                return False
+    
+    return True
+
+if __name__ == "__main__":
+ sudoku1 = [
+  [9, 0, 0, 0, 8, 0, 3, 0, 0],
+  [2, 0, 0, 2, 5, 0, 7, 0, 0],
+  [0, 2, 0, 3, 0, 0, 0, 0, 4],
+  [2, 9, 4, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 7, 3, 0, 5, 6, 0],
+  [7, 0, 5, 0, 6, 0, 4, 0, 0],
+  [0, 0, 7, 8, 0, 3, 9, 0, 0],
+  [0, 0, 1, 0, 0, 0, 0, 0, 3],
+  [3, 0, 0, 0, 0, 0, 0, 0, 2]
+ ]
+
+ print(sudoku_grid_correct(sudoku1))
+
+ sudoku2 = [
+  [2, 6, 7, 8, 3, 9, 5, 0, 4],
+  [9, 0, 3, 5, 1, 0, 6, 0, 0],
+  [0, 5, 1, 6, 0, 0, 8, 3, 9],
+  [5, 1, 9, 0, 4, 6, 3, 2, 8],
+  [8, 0, 2, 1, 0, 5, 7, 0, 6],
+  [6, 7, 4, 3, 2, 0, 0, 0, 5],
+  [0, 0, 0, 4, 5, 7, 2, 6, 3],
+  [3, 2, 0, 0, 8, 0, 0, 5, 7],
+  [7, 4, 5, 0, 0, 3, 9, 0, 1]
+ ] 
+
+ print(sudoku_grid_correct(sudoku2))
